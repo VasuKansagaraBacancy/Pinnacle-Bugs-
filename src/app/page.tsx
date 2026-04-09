@@ -109,7 +109,7 @@ export default function DashboardPage() {
           <p className="text-gray-500 text-sm">Loading bugs...</p>
         </div>
       ) : (
-        <BugTable bugs={filtered} onDelete={handleDelete} deleting={deleting} />
+        <BugTable bugs={filtered} allBugs={bugs} onDelete={handleDelete} deleting={deleting} />
       )}
     </div>
   );

@@ -10,9 +10,11 @@ import {
 } from 'react-icons/fi';
 import { Bug } from '@/lib/types';
 import StatusBadge from './StatusBadge';
+import { getBadgeForCount } from '@/lib/badges';
 
 interface BugTableProps {
   bugs: Bug[];
+  allBugs: Bug[]; // full unfiltered list — needed for accurate badge counts
   onDelete: (id: string) => void;
   deleting: string | null;
 }
@@ -22,7 +24,9 @@ interface ModalState {
   index: number;
 }
 
-export default function BugTable({ bugs, onDelete, deleting }: BugTableProps) {
+export default function BugTable({ bugs, allBugs, onDelete, deleting }: BugTableProps) {
+  const fixedByAssignee = (assignee: string) =>
+    allBugs.filter((b) => b.assignee === assignee && b.status === 'Fixed').length;
   const [modal, setModal] = useState<ModalState | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
@@ -107,10 +111,16 @@ export default function BugTable({ bugs, onDelete, deleting }: BugTableProps) {
 
                 <td className="px-4 py-3">
                   <span className="inline-flex items-center gap-1.5">
-                    <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center">
+                    <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center flex-shrink-0">
                       {bug.assignee[0]}
                     </span>
-                    {bug.assignee}
+                    <span>{bug.assignee}</span>
+                    <span
+                      title={getBadgeForCount(fixedByAssignee(bug.assignee)).label}
+                      className="text-sm leading-none"
+                    >
+                      {getBadgeForCount(fixedByAssignee(bug.assignee)).emoji}
+                    </span>
                   </span>
                 </td>
 
@@ -198,7 +208,13 @@ export default function BugTable({ bugs, onDelete, deleting }: BugTableProps) {
                 )}
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-gray-500 space-y-0.5">
-                    <p><span className="font-medium">Assignee:</span> {bug.assignee}</p>
+                    <p>
+                      <span className="font-medium">Assignee:</span>{' '}
+                      {bug.assignee}{' '}
+                      <span title={getBadgeForCount(fixedByAssignee(bug.assignee)).label}>
+                        {getBadgeForCount(fixedByAssignee(bug.assignee)).emoji}
+                      </span>
+                    </p>
                     <p><span className="font-medium">Date:</span> {format(new Date(bug.date), 'MMM d, yyyy')}</p>
                   </div>
                   <div className="flex gap-2">
