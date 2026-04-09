@@ -8,15 +8,16 @@ export default function StatsCards({ bugs }: StatsCardsProps) {
   const total = bugs.length;
   const notFixed = bugs.filter((b) => b.status === 'Not Fixed').length;
   const inProgress = bugs.filter((b) => b.status === 'Under Process').length;
+  const devFixed = bugs.filter((b) => b.status === 'Developer Fixed').length;
   const fixed = bugs.filter((b) => b.status === 'Fixed').length;
 
   const cards = [
     {
       label: 'Total Bugs',
       value: total,
-      bg: 'bg-blue-50',
-      text: 'text-blue-700',
-      border: 'border-blue-200',
+      bg: 'bg-gray-50',
+      text: 'text-gray-700',
+      border: 'border-gray-200',
       icon: '🐛',
     },
     {
@@ -36,6 +37,14 @@ export default function StatsCards({ bugs }: StatsCardsProps) {
       icon: '🟡',
     },
     {
+      label: 'Developer Fixed',
+      value: devFixed,
+      bg: 'bg-blue-50',
+      text: 'text-blue-700',
+      border: 'border-blue-200',
+      icon: '🔵',
+    },
+    {
       label: 'Fixed',
       value: fixed,
       bg: 'bg-green-50',
@@ -46,7 +55,7 @@ export default function StatsCards({ bugs }: StatsCardsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
       {cards.map((card) => (
         <div
           key={card.label}

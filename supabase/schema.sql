@@ -9,7 +9,7 @@ create table if not exists public.bugs (
   description text        not null,
   image_urls  text[]      not null default '{}',
   status      text        not null default 'Not Fixed'
-                          check (status in ('Not Fixed', 'Under Process', 'Fixed')),
+                          check (status in ('Not Fixed', 'Under Process', 'Developer Fixed', 'Fixed')),
   assignee    text        not null
                           check (assignee in ('Alpesh', 'Paras', 'Kreya', 'Devang', 'Palak')),
   date        date        not null default current_date,

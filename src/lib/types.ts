@@ -1,10 +1,10 @@
-export type BugStatus = 'Not Fixed' | 'Under Process' | 'Fixed';
+export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed' | 'Fixed';
 
 export type Assignee = 'Alpesh' | 'Paras' | 'Kreya' | 'Devang' | 'Palak';
 
 export const ASSIGNEES: Assignee[] = ['Alpesh', 'Paras', 'Kreya', 'Devang', 'Palak'];
 
-export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Fixed'];
+export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Developer Fixed', 'Fixed'];
 
 export interface Bug {
   id: string;
