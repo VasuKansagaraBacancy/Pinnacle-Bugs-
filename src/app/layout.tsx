@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Pinnacle Bug Reporting',
   description: 'Track, manage, and resolve bugs with ease',
+  icons: {
+    icon: '/icon',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
