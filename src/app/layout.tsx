@@ -15,12 +15,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-gray-50">
           <Navbar />
-          <main className="flex-1 container mx-auto px-4 py-8 max-w-7xl">{children}</main>
+          {/* pb-20 on mobile to clear the bottom tab bar */}
+          <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl pb-24 sm:pb-8">
+            {children}
+          </main>
         </div>
         <Toaster
-          position="top-right"
+          position="top-center"
           toastOptions={{
             duration: 4000,
             style: {
@@ -28,13 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               color: '#f1f5f9',
               borderRadius: '8px',
               fontSize: '14px',
+              maxWidth: '90vw',
             },
-            success: {
-              iconTheme: { primary: '#22c55e', secondary: '#f1f5f9' },
-            },
-            error: {
-              iconTheme: { primary: '#ef4444', secondary: '#f1f5f9' },
-            },
+            success: { iconTheme: { primary: '#22c55e', secondary: '#f1f5f9' } },
+            error: { iconTheme: { primary: '#ef4444', secondary: '#f1f5f9' } },
           }}
         />
       </body>

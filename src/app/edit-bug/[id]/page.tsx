@@ -17,30 +17,28 @@ export default async function EditBugPage({ params }: EditBugPageProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-4 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Link
           href="/"
-          className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors flex-shrink-0"
         >
           <FiArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Edit Bug</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Update the bug details below.
-          </p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Edit Bug</h1>
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">Update the bug details below.</p>
         </div>
       </div>
 
-      {/* Bug ID reference */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2.5 text-sm text-blue-700 font-mono">
+      {/* Bug ID reference — truncate on mobile */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl px-3 sm:px-4 py-2.5 text-xs sm:text-sm text-blue-700 font-mono truncate">
         Bug ID: {bug.id}
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6">
         <BugForm bug={bug} />
       </div>
     </div>

@@ -182,11 +182,11 @@ export default function BugForm({ bug }: BugFormProps) {
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+          className="flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
         >
           {loading ? (
             <>
@@ -204,7 +204,7 @@ export default function BugForm({ bug }: BugFormProps) {
           type="button"
           onClick={() => router.back()}
           disabled={loading}
-          className="flex items-center gap-2 px-6 py-2.5 bg-white text-gray-600 border border-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors disabled:opacity-60"
+          className="flex items-center justify-center gap-2 px-6 py-3 sm:py-2.5 bg-white text-gray-600 border border-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors disabled:opacity-60"
         >
           <FiX className="w-4 h-4" />
           Cancel

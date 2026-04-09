@@ -38,7 +38,6 @@ export default function DashboardPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this bug? This action cannot be undone.')) return;
-
     setDeleting(id);
     try {
       await deleteBug(id);
@@ -51,7 +50,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Apply filters & sort client-side
   const filtered = bugs
     .filter((b) => filters.status === 'All' || b.status === (filters.status as BugStatus))
     .filter((b) => filters.assignee === 'All' || b.assignee === (filters.assignee as Assignee))
@@ -62,12 +60,12 @@ export default function DashboardPage() {
     });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Bug Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Bug Dashboard</h1>
+          <p className="text-xs sm:text-sm text-gray-500 mt-0.5 hidden sm:block">
             Track and manage all reported bugs in one place.
           </p>
         </div>
@@ -75,14 +73,15 @@ export default function DashboardPage() {
           <button
             onClick={loadBugs}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 text-sm bg-white border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 text-sm bg-white border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <FiRefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            Refresh
+            <span className="hidden sm:inline">Refresh</span>
           </button>
+          {/* Hidden on mobile — bottom tab bar handles Add Bug */}
           <Link
             href="/add-bug"
-            className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm"
           >
             <FiPlus className="w-4 h-4" />
             Add Bug
