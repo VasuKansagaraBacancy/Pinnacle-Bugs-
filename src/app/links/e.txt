@@ -1,0 +1,52 @@
+Me | Leave | Summary - https://bacancy.keka.com/#/me/leave/summary
+Gmail - https://mail.google.com/mail/u/0/#inbox
+PMS - http://pms.bacancy.com/employees/sign_in
+Outlook - https://outlook.office.com/mail/
+Figma - ASPE (Thenamaris) - https://www.figma.com/proto/phO4zmNv3gfSBQ8xYNsXeK/ASPE-(Thenamaris)?node-id=14-1907&node-type=frame&t=ruZV5qNuVV6aZMw9-0&scaling=contain&content-scaling=fixed&page-id=0%3A1
+On Board Attendance - https://businessapps-uat.thenamaris.com/onboardattendance
+Swagger UI - http://localhost:81/swagger/index.html
+ASPE (Thenamaris) – Figma - https://www.figma.com/design/phO4zmNv3gfSBQ8xYNsXeK/ASPE-(Thenamaris)?node-id=6-889&node-type=frame&t=p7ADklLZmy7Wbeys-0
+Thenamaris - Features list_Developers (1).xlsx - Google Sheets - https://docs.google.com/spreadsheets/d/1bhhahiCR-QrcjvT8vEBHLT2XQ_xBT_nX/edit?gid=2069155107#gid=2069155107
+2024-PL-05 Evaluation of Agents and Related Service Providers - Issues - https://thenamarisfiles.sharepoint.com/sites/2024-PL-05/Lists/Issues/AllItems.aspx?e=3%3Aa9087eff0f7e43d68fd9dbaf2d7a13b7&sharingv2=true&fromShare=true&at=9&CID=f4eed6f0%2D7960%2D4f69%2Dbdb9%2D52edca4a9ba7
+.Net Requirement - Google Sheets - https://docs.google.com/spreadsheets/d/1VZVsNtRH3_ekCtbKcmdnMQgdEiSgjj1P10c7_JUHQoQ/edit?gid=1602748084#gid=1602748084
+Meeting & Conference Room Bookings - Google Docs - https://docs.google.com/document/d/1ESkxdL_BWGHqbS94Rsk1UvxSxJsgl7blLx9OEh-kkUg/edit
+Interviewers Availability-2023/2024 - Google Sheets - https://docs.google.com/spreadsheets/d/1hSyfxY6McNGsyrQu52yTiKmsXk5EY2qi-rS9zSVxwPw/edit#gid=1577159279
+Log In and Start Learning | Udemy - https://www.udemy.com/join/login-popup/?next=/course/azure-ad-and-azure-ad-b2c-for-developers-and-architects/learn/lecture/34904062%3Fstart%3D45#overview
+.NET Web API Boilerplate - fullstackhero - https://fullstackhero.net/dotnet-webapi-boilerplate/
+ASP.NET Boilerplate - Open Source Web Application Development Framework - https://aspnetboilerplate.com/
+Digital Transformation Topic - Google Sheets - https://docs.google.com/spreadsheets/d/1XrxqoZKVK29Ihq6cENc1n_fqJgo6d5HB1r1cxcqjy1Y/edit?gid=333165764#gid=333165764
+Learning Management System - https://react-lms-10fe9.web.app/modern-learning-path/aERnCd7Kx5caWOtbh5dZ
+bolt.new - https://bolt.new/?trk=public_post_comment-text
+ChatGPT - https://chatgpt.com/
+Pinnacle Clarity - Bacancy.docx - Google Docs - https://docs.google.com/document/d/1BHowPnbzeButkYdAl8wLoya6CWcelgES/edit
+Pinnacl-Database fields.xlsx - Google Sheets - https://docs.google.com/spreadsheets/d/13qX4Da7E0mHfTQnf1QFcxiDIWnRmtTHN/edit?gid=983139644#gid=983139644
+pinnacle_backend - Repos - https://dev.azure.com/pfs-bacancy/bacancy-dev/_git/pinnacle_backend
+Swagger UI - http://localhost:5000/swagger/index.html
+Pinnacle - Client Feedback - Google Sheets - https://docs.google.com/spreadsheets/d/1ZFLbK2nO6kdRuqu9JHJyDsWHevCH9ZcyDoxTeKDSrmA/edit?gid=0#gid=0
+Jira - https://bacancy-pinnacle-clarity.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog?source=peopleMenu&cloudId=9be49fec-0cf1-47fd-919d-141cf897a4d7&atlOrigin=eyJwIjoiaiIsImkiOiI3ZTBjZDU4YjNkMWQ0MTYwOTg3MjBkODU2MjhmOWEwMiJ9
+Twilio Console - https://console.twilio.com/
+Me | Expenses | Add - https://bacancy.keka.com/#/me/expenses/add
+Swagger UI - Prod - http://backend.20.220.33.144.nip.io/swagger/index.html#/Tokens/Tokens_GetToken
+Dev-URL - https://dev.pinnaclefundservices.com/login
+UAT - https://uat.pinnaclefundservices.com/dashboard
+PRD - https://clarity.pinnaclefundservices.com/
+SQL Server Maintenance Solution Downloads - https://ola.hallengren.com/downloads.html
+SQL Server Index and Statistics Maintenance - https://ola.hallengren.com/sql-server-index-and-statistics-maintenance.html
+Pinnacle - Week wise deliverables.xlsx - Google Sheets - https://docs.google.com/spreadsheets/d/1IuGjRH0UtcL1XMWWlYP0dB41dIccu7Ua/edit?usp=sharing&ouid=111873900737599221198&rtpof=true&sd=true
+Azure Portal - https://portal.azure.com/?l=en.en-us#@pinnaclefundservices.com/resource/subscriptions/b3c76005-a819-4fec-a887-6abbd0712584/resourceGroups/PF-RES-GROUP-BACANCY/providers/Microsoft.Storage/storageAccounts/pfsabacancy/storagebrowser
+Confluence-Document - https://bacancy-pinnacle-clarity.atlassian.net/wiki/spaces/PICL/overview
+Dev - Swagger UI - https://backend.4.206.140.84.nip.io/swagger/index.html#/Users/Users_GetList
+Pinnacle - https://dev.pinnaclefundservices.com/permissions
+QA Bug - https://pinnaclebugs.vercel.app/
+REM-Bitbucket - https://bitbucket.org/regenteducation/regent-rem/src/main/
+RDB-Bitbucket - https://bitbucket.org/regenteducation/regent-rdb/src/main/
+Regent-nx-bitbucket - https://bitbucket.org/regenteducation/regent-nx/src/main/
+SNAP-bitbucket - https://bitbucket.org/regenteducation/regent-snap/src/main/
+RNA — Bitbucket - https://bitbucket.org/regenteducation/regent-rna/src/main/
+Sign in to Regent - https://auth.regenteducation.net/realms/regent/protocol/openid-connect/auth?response_type=code&scope=openid&state=abf29bb7fe89d30afcb6988afc39475b41f187eb73ae36bab61fa12747ee33f5&redirect_uri=https%3A%2F%2Fcommandcenter.regenteducation.net%2Fapi%2Fauth%2Fcallback%2Fregent&client_id=regentautomateui
+Jira - https://regenteducation.atlassian.net/browse/RS-26360
+Mail - Alpesh Maniya - Outlook - https://outlook.office.com/mail/?realm=regenteducation.com&exsvurl=1&ll-cc=1033&modurl=0&url=%2fowa%2f%3frealm%253dregenteducation.com%2526exsvurl%253d1%2526ll-cc%253d1033%2526modurl%253d0%2526login_hint%253dalpesh.maniya%252540regenteducation.com
+6.10.0.0 - JIRA - https://regenteducation.atlassian.net/jira/dashboards/14037
+Tempo - JIRA - https://regenteducation.atlassian.net/plugins/servlet/ac/io.tempo.jira/tempo-app#!/my-work/week?type=LIST&date=2025-03-10
+Regent Automation - https://commandcenter.regenteducation.net/instances
+Mahakurukshetra.md - https://gist.github.com/kokhp/63dfb9483c1107408d095c52f7e1d7e5

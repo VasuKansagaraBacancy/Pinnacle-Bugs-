@@ -9,6 +9,7 @@ import { fetchBugs, deleteBug } from '@/services/bugService';
 import BugTable from '@/components/BugTable';
 import FilterBar, { FilterState, defaultFilters } from '@/components/FilterBar';
 import StatsCards from '@/components/StatsCards';
+import DavidWarning from '@/components/DavidWarning';
 
 export default function DashboardPage() {
   const [bugs, setBugs] = useState<Bug[]>([]);
@@ -88,6 +89,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {!loading && <DavidWarning bugs={bugs} />}
       {!loading && <StatsCards bugs={bugs} />}
 
       {!loading && bugs.length > 0 && (

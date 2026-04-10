@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FiAlertOctagon, FiPlus, FiHome, FiAward } from 'react-icons/fi';
+import { FiAlertOctagon, FiPlus, FiHome, FiAward, FiLink } from 'react-icons/fi';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -38,6 +38,10 @@ export default function Navbar() {
               <FiAward className="w-4 h-4" />
               Leaderboard
             </Link>
+            <Link href="/links" className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/links')}`}>
+              <FiLink className="w-4 h-4" />
+              Links
+            </Link>
             <Link href="/add-bug" className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/add-bug')}`}>
               <FiPlus className="w-4 h-4" />
               Add Bug
@@ -65,23 +69,31 @@ export default function Navbar() {
           Dashboard
         </Link>
 
-        {/* Centre FAB — Add Bug */}
-        <Link
-          href="/add-bug"
-          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs font-medium transition-colors relative"
-        >
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center -mt-5 shadow-md bg-blue-600`}>
-            <FiPlus className="w-5 h-5 text-white" />
-          </div>
-          <span className={`mt-0.5 ${mobileActive('/add-bug')}`}>Add Bug</span>
-        </Link>
-
         <Link
           href="/leaderboard"
           className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs font-medium transition-colors ${mobileActive('/leaderboard')}`}
         >
           <FiAward className="w-5 h-5" />
           Awards
+        </Link>
+
+        {/* Centre FAB — Add Bug */}
+        <Link
+          href="/add-bug"
+          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs font-medium transition-colors relative"
+        >
+          <div className="w-9 h-9 rounded-full flex items-center justify-center -mt-5 shadow-md bg-blue-600">
+            <FiPlus className="w-5 h-5 text-white" />
+          </div>
+          <span className={`mt-0.5 ${mobileActive('/add-bug')}`}>Add Bug</span>
+        </Link>
+
+        <Link
+          href="/links"
+          className={`flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs font-medium transition-colors ${mobileActive('/links')}`}
+        >
+          <FiLink className="w-5 h-5" />
+          Links
         </Link>
       </div>
     </nav>

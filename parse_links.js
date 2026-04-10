@@ -1,0 +1,14 @@
+var fs=require('fs');
+var c=fs.readFileSync('src/app/links/e.txt','utf-8');
+var lines=c.split('\n');
+var out='';
+var folder='Root';
+for(var i=0;i<lines.length;i++){
+  var line=lines[i];
+  var h3=/<H3[^>]*>([^<]+)/.exec(line);
+  if(h3){folder=h3[1].trim();out+='\n==='+folder+'===\n';continue;}
+  var a=/HREF="((?!data:)[^"]+)"[^>]*>([^<]+)<\/A>/.exec(line);
+  if(a){out+='  '+a[2].replace(/&amp;/g,'&').trim()+' | '+a[1]+'\n';}
+}
+fs.writeFileSync('src/app/links/links_out.txt',out);
+console.log('Written '+out.length+' chars');
