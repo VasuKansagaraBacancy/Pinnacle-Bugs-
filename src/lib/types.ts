@@ -1,4 +1,4 @@
-export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed' | 'Fixed';
+export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed'| 'Ready for QA' | 'Fixed';
 
 export type Assignee = 'Alpesh' | 'Paras' | 'Kreya' | 'Devang' | 'Palak';
 
