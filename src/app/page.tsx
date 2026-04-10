@@ -4,27 +4,22 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { FiPlus, FiRefreshCw } from 'react-icons/fi';
-import { Bug, BugStatus, Assignee } from '@/lib/types';
+import { Bug, BugStatus, Assignee, Priority, Environment } from '@/lib/types';
 import { fetchBugs, deleteBug } from '@/services/bugService';
 import BugTable from '@/components/BugTable';
-import FilterBar, { FilterState } from '@/components/FilterBar';
+import FilterBar, { FilterState, defaultFilters } from '@/components/FilterBar';
 import StatsCards from '@/components/StatsCards';
 
 export default function DashboardPage() {
   const [bugs, setBugs] = useState<Bug[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
-  const [filters, setFilters] = useState<FilterState>({
-    status: 'All',
-    assignee: 'All',
-    sortOrder: 'desc',
-  });
+  const [filters, setFilters] = useState<FilterState>(defaultFilters);
 
   const loadBugs = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchBugs();
-      setBugs(data);
+      setBugs(await fetchBugs());
     } catch {
       toast.error('Failed to load bugs. Check your Supabase configuration.');
     } finally {
@@ -32,9 +27,7 @@ export default function DashboardPage() {
     }
   }, []);
 
-  useEffect(() => {
-    loadBugs();
-  }, [loadBugs]);
+  useEffect(() => { loadBugs(); }, [loadBugs]);
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this bug? This action cannot be undone.')) return;
@@ -50,13 +43,20 @@ export default function DashboardPage() {
     }
   };
 
+  // Inline update: replace the updated bug in local state
+  const handleUpdate = useCallback((updated: Bug) => {
+    setBugs((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
+  }, []);
+
   const filtered = bugs
-    .filter((b) => filters.status === 'All' || b.status === (filters.status as BugStatus))
-    .filter((b) => filters.assignee === 'All' || b.assignee === (filters.assignee as Assignee))
+    .filter((b) => filters.status      === 'All' || b.status      === (filters.status      as BugStatus))
+    .filter((b) => filters.assignee    === 'All' || b.assignee    === (filters.assignee    as Assignee))
+    .filter((b) => filters.priority    === 'All' || b.priority    === (filters.priority    as Priority))
+    .filter((b) => filters.environment === 'All' || b.environment === (filters.environment as Environment))
     .sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return filters.sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
+      const da = new Date(a.date).getTime();
+      const db = new Date(b.date).getTime();
+      return filters.sortOrder === 'desc' ? db - da : da - db;
     });
 
   return (
@@ -78,7 +78,6 @@ export default function DashboardPage() {
             <FiRefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             <span className="hidden sm:inline">Refresh</span>
           </button>
-          {/* Hidden on mobile — bottom tab bar handles Add Bug */}
           <Link
             href="/add-bug"
             className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm"
@@ -89,10 +88,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats */}
       {!loading && <StatsCards bugs={bugs} />}
 
-      {/* Filters */}
       {!loading && bugs.length > 0 && (
         <FilterBar
           filters={filters}
@@ -102,14 +99,19 @@ export default function DashboardPage() {
         />
       )}
 
-      {/* Table / Loading */}
       {loading ? (
         <div className="bg-white rounded-xl border border-gray-200 p-16 flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin" />
           <p className="text-gray-500 text-sm">Loading bugs...</p>
         </div>
       ) : (
-        <BugTable bugs={filtered} allBugs={bugs} onDelete={handleDelete} deleting={deleting} />
+        <BugTable
+          bugs={filtered}
+          allBugs={bugs}
+          onDelete={handleDelete}
+          onUpdate={handleUpdate}
+          deleting={deleting}
+        />
       )}
     </div>
   );
