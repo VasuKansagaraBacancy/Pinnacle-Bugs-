@@ -21,6 +21,11 @@ const statusConfig: Record<BugStatus, { label: string; classes: string; dot: str
     classes: 'bg-blue-100 text-blue-700 border border-blue-200',
     dot: 'bg-blue-500',
   },
+  'Ready for QA': { 
+    label: 'Ready for QA',
+    classes: 'bg-purple-100 text-purple-700 border border-purple-200',
+    dot: 'bg-purple-500',
+  },
   'Fixed': {
     label: 'Fixed',
     classes: 'bg-green-100 text-green-700 border border-green-200',

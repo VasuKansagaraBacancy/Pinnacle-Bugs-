@@ -10,17 +10,19 @@ export default function StatsCards({ bugs }: StatsCardsProps) {
   const inProgress = bugs.filter((b) => b.status === 'Under Process').length;
   const devFixed = bugs.filter((b) => b.status === 'Developer Fixed').length;
   const fixed = bugs.filter((b) => b.status === 'Fixed').length;
+  const readyForQA = bugs.filter((b) => b.status === 'Ready for QA').length;
 
   const cards = [
     { label: 'Total',            value: total,      bg: 'bg-gray-50',   text: 'text-gray-700',   border: 'border-gray-200',  icon: '🐛' },
     { label: 'Not Fixed',        value: notFixed,   bg: 'bg-red-50',    text: 'text-red-700',    border: 'border-red-200',   icon: '🔴' },
     { label: 'Under Process',    value: inProgress, bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200',icon: '🟡' },
     { label: 'Dev Fixed',        value: devFixed,   bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-200',  icon: '🔵' },
+    { label: 'Ready for QA',     value: readyForQA, bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200', icon: '🟣' },
     { label: 'Fixed',            value: fixed,      bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-200', icon: '✅' },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
       {cards.map((card) => (
         <div
           key={card.label}

@@ -8,7 +8,7 @@ export type Environment = 'UAT' | 'Live' | 'Demo' | 'Test';
 
 export const ASSIGNEES: Assignee[] = ['Alpesh', 'Paras', 'Kreya', 'Devang', 'Palak'];
 
-export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Developer Fixed', 'Fixed'];
+export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Developer Fixed', 'Ready for QA', 'Fixed'];
 
 export const PRIORITIES: Priority[] = ['High', 'Medium', 'Low'];
 
