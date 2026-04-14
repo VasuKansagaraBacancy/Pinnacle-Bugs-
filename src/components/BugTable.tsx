@@ -5,12 +5,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import {
   FiEdit2, FiTrash2, FiImage, FiChevronUp, FiChevronDown,
   FiChevronLeft, FiChevronRight, FiX,
 } from 'react-icons/fi';
-import { Bug, BugStatus, Assignee, Priority, Environment, STATUSES, ASSIGNEES, PRIORITIES, ENVIRONMENTS } from '@/lib/types';
+import { Bug, BugStatus, Assignee, Priority, Environment, STATUSES, ASSIGNEES, PRIORITIES, ENVIRONMENTS, BugStatus, Assignee, Priority, Environment, STATUSES, ASSIGNEES, PRIORITIES, ENVIRONMENTS } from '@/lib/types';
 import { updateBug } from '@/services/bugService';
+import { updateBug } from '@/services/bugService';
+import { notifyAssignee } from '@/services/notifyService';
 import StatusBadge from './StatusBadge';
 import PriorityBadge from './PriorityBadge';
 import EnvironmentBadge from './EnvironmentBadge';
@@ -20,16 +23,21 @@ import { getBadgeForCount } from '@/lib/badges';
 interface BugTableProps {
   bugs: Bug[];
   allBugs: Bug[];
+  allBugs: Bug[];
   onDelete: (id: string) => void;
+  onUpdate: (updatedBug: Bug) => void;
   onUpdate: (updatedBug: Bug) => void;
   deleting: string | null;
 }
 
 interface ModalState { images: string[]; index: number; }
 
-export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }: BugTableProps) {
+export default function BugTable({ bugs, allBugs, allBugs, onDelete, onUpdate, onUpdate, deleting }: BugTableProps) {
   const [modal, setModal] = useState<ModalState | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
+
+  const fixedByAssignee = (assignee: string) =>
+    allBugs.filter((b) => b.assignee === assignee && b.status === 'Fixed').length;
 
   const fixedByAssignee = (assignee: string) =>
     allBugs.filter((b) => b.assignee === assignee && b.status === 'Fixed').length;
@@ -44,6 +52,10 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
       try {
         const updated = await updateBug(bug.id, { [field]: value });
         onUpdate(updated);
+        // Send SMS when assignee is changed inline
+        if (field === 'assignee') {
+          notifyAssignee(updated);
+        }
         toast.success('Updated!');
       } catch {
         toast.error('Failed to update. Please try again.');
@@ -63,6 +75,41 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
 
   return (
     <>
+      {/* ── Desktop Table ───────────────────────────── */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        {/* Horizontally scrollable on mid-size screens */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[900px]">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200 text-left">
+                <th className="px-3 py-3 font-semibold text-gray-500 w-8">#</th>
+                <th className="px-3 py-3 font-semibold text-gray-500">Description</th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-28">Ticket</th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-28">Images</th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-40">
+                  Status
+                  <span className="ml-1 text-[10px] text-blue-400 font-normal">✎ editable</span>
+                </th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-28">
+                  Priority
+                  <span className="ml-1 text-[10px] text-blue-400 font-normal">✎</span>
+                </th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-28">
+                  Env
+                  <span className="ml-1 text-[10px] text-blue-400 font-normal">✎</span>
+                </th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-32">
+                  Assignee
+                  <span className="ml-1 text-[10px] text-blue-400 font-normal">✎</span>
+                </th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-24">Date</th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-20">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {bugs.map((bug, index) => (
+                <tr key={bug.id} className="hover:bg-gray-50/70 transition-colors">
+                  <td className="px-3 py-3 text-gray-400 font-mono text-xs">{index + 1}</td>
       {/* ── Desktop Table ───────────────────────────── */}
       <div className="hidden md:block bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         {/* Horizontally scrollable on mid-size screens */}

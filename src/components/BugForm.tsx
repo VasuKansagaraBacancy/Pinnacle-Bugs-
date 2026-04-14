@@ -11,6 +11,7 @@ import {
   STATUSES, ASSIGNEES, PRIORITIES, ENVIRONMENTS,
 } from '@/lib/types';
 import { createBug, updateBug, uploadBugImages, deleteBugImages } from '@/services/bugService';
+import { notifyAssignee } from '@/services/notifyService';
 import ImageUpload from './ImageUpload';
 
 interface BugFormProps {
@@ -73,9 +74,14 @@ export default function BugForm({ bug }: BugFormProps) {
 
       if (isEdit) {
         await updateBug(bug.id, payload);
+        // Notify only if assignee was changed
+        if (bug.assignee !== form.assignee) {
+          notifyAssignee(payload);
+        }
         toast.success('Bug updated successfully!');
       } else {
         await createBug(payload);
+        notifyAssignee(payload);
         toast.success('Bug reported successfully!');
       }
       router.push('/');
