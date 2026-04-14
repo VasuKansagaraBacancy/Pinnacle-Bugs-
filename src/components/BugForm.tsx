@@ -22,12 +22,13 @@ export default function BugForm({ bug }: BugFormProps) {
   const isEdit = !!bug;
 
   const [form, setForm] = useState({
-    description:  bug?.description  ?? '',
-    status:       (bug?.status       ?? 'Not Fixed') as BugStatus,
-    assignee:     (bug?.assignee     ?? 'Alpesh')    as Assignee,
-    priority:     (bug?.priority     ?? 'Medium')    as Priority,
-    environment:  (bug?.environment  ?? 'UAT')       as Environment,
-    date:         bug?.date ?? format(new Date(), 'yyyy-MM-dd'),
+    description:   bug?.description   ?? '',
+    status:        (bug?.status        ?? 'Not Fixed') as BugStatus,
+    assignee:      (bug?.assignee      ?? 'Alpesh')    as Assignee,
+    priority:      (bug?.priority      ?? 'Medium')    as Priority,
+    environment:   (bug?.environment   ?? 'UAT')       as Environment,
+    date:          bug?.date ?? format(new Date(), 'yyyy-MM-dd'),
+    ticket_number: bug?.ticket_number ?? '',
   });
 
   const [newFiles, setNewFiles]   = useState<File[]>([]);
@@ -60,13 +61,14 @@ export default function BugForm({ bug }: BugFormProps) {
       }
 
       const payload: CreateBugPayload = {
-        description: form.description.trim(),
-        status:      form.status,
-        assignee:    form.assignee,
-        priority:    form.priority,
-        environment: form.environment,
-        date:        form.date,
-        image_urls:  [...keptUrls, ...uploadedUrls],
+        description:   form.description.trim(),
+        status:        form.status,
+        assignee:      form.assignee,
+        priority:      form.priority,
+        environment:   form.environment,
+        date:          form.date,
+        image_urls:    [...keptUrls, ...uploadedUrls],
+        ticket_number: form.ticket_number.trim() || null,
       };
 
       if (isEdit) {
@@ -180,6 +182,21 @@ export default function BugForm({ bug }: BugFormProps) {
           }`}
         />
         {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
+      </div>
+
+      {/* Ticket Number */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          Ticket Number <span className="text-gray-400 font-normal">(optional — leave blank for General Bug)</span>
+        </label>
+        <input
+          type="text"
+          value={form.ticket_number}
+          onChange={(e) => handleChange('ticket_number', e.target.value)}
+          disabled={loading}
+          placeholder="e.g. TICK-123"
+          className="w-full sm:w-64 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
       </div>
 
       {/* Actions */}

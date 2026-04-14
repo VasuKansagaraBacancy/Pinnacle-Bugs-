@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { BugStatus, STATUSES, Assignee, ASSIGNEES, Priority, PRIORITIES, Environment, ENVIRONMENTS } from '@/lib/types';
-import { FiFilter, FiUser, FiCalendar, FiX, FiChevronDown } from 'react-icons/fi';
+import { FiFilter, FiUser, FiCalendar, FiX, FiChevronDown, FiSearch } from 'react-icons/fi';
 
 export interface FilterState {
   status: BugStatus | 'All';
@@ -10,6 +10,7 @@ export interface FilterState {
   priority: Priority | 'All';
   environment: Environment | 'All';
   sortOrder: 'desc' | 'asc';
+  ticketSearch: string;
 }
 
 export const defaultFilters: FilterState = {
@@ -18,6 +19,7 @@ export const defaultFilters: FilterState = {
   priority: 'All',
   environment: 'All',
   sortOrder: 'desc',
+  ticketSearch: '',
 };
 
 interface FilterBarProps {
@@ -38,6 +40,7 @@ export default function FilterBar({ filters, onChange, total, filtered }: Filter
     filters.assignee !== 'All',
     filters.priority !== 'All',
     filters.environment !== 'All',
+    filters.ticketSearch !== '',
   ].filter(Boolean).length;
 
   const hasActiveFilters = activeCount > 0;
@@ -68,6 +71,28 @@ export default function FilterBar({ filters, onChange, total, filtered }: Filter
 
       {/* ── Filter controls ───────────────────────────── */}
       <div className={`sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:p-4 ${open ? 'block border-t border-gray-100 p-4 space-y-3' : 'hidden sm:flex'}`}>
+
+        {/* Ticket search */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <FiSearch className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <div className="relative flex-1 sm:flex-none">
+            <input
+              type="text"
+              value={filters.ticketSearch}
+              onChange={(e) => onChange({ ...filters, ticketSearch: e.target.value })}
+              placeholder="Ticket #..."
+              className="text-sm border border-gray-200 rounded-lg px-3 py-2 sm:py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-32 font-mono"
+            />
+            {filters.ticketSearch && (
+              <button
+                onClick={() => onChange({ ...filters, ticketSearch: '' })}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <FiX className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Status */}
         <div className="flex items-center gap-2 w-full sm:w-auto">

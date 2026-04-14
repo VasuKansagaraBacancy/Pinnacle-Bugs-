@@ -54,6 +54,11 @@ export default function DashboardPage() {
     .filter((b) => filters.assignee    === 'All' || b.assignee    === (filters.assignee    as Assignee))
     .filter((b) => filters.priority    === 'All' || b.priority    === (filters.priority    as Priority))
     .filter((b) => filters.environment === 'All' || b.environment === (filters.environment as Environment))
+    .filter((b) => {
+      if (!filters.ticketSearch) return true;
+      const q = filters.ticketSearch.replace(/^#/, '').toLowerCase();
+      return b.ticket_number?.toLowerCase().includes(q) ?? false;
+    })
     .sort((a, b) => {
       const da = new Date(a.date).getTime();
       const db = new Date(b.date).getTime();

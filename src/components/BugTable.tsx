@@ -72,6 +72,7 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
               <tr className="bg-gray-50 border-b border-gray-200 text-left">
                 <th className="px-3 py-3 font-semibold text-gray-500 w-8">#</th>
                 <th className="px-3 py-3 font-semibold text-gray-500">Description</th>
+                <th className="px-3 py-3 font-semibold text-gray-500 w-28">Ticket</th>
                 <th className="px-3 py-3 font-semibold text-gray-500 w-28">Images</th>
                 <th className="px-3 py-3 font-semibold text-gray-500 w-40">
                   Status
@@ -100,6 +101,19 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
 
                   <td className="px-3 py-3 max-w-[200px]">
                     <p className="text-gray-800 line-clamp-2 text-sm">{bug.description}</p>
+                  </td>
+
+                  {/* Ticket */}
+                  <td className="px-3 py-3">
+                    {bug.ticket_number ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-mono font-semibold border border-indigo-200">
+                        #{bug.ticket_number}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-gray-100 text-gray-400 text-xs font-medium">
+                        General Bug
+                      </span>
+                    )}
                   </td>
 
                   {/* Thumbnails */}
@@ -240,6 +254,15 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
                   <StatusBadge status={bug.status} size="sm" />
                   <PriorityBadge priority={bug.priority} size="sm" />
                   <EnvironmentBadge environment={bug.environment} size="sm" />
+                  {bug.ticket_number ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 text-xs font-mono font-semibold border border-indigo-200">
+                      #{bug.ticket_number}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-gray-100 text-gray-400 text-xs font-medium">
+                      General Bug
+                    </span>
+                  )}
                 </div>
               </div>
               {expandedRow === bug.id
