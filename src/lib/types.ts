@@ -3,7 +3,6 @@ export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed' | 'Rea
 export type Assignee = 'Alpesh' | 'Paras' | 'Kreya' | 'Devang' | 'Palak';
 
 export type Priority = 'High' | 'Medium' | 'Low';
-
 export type Environment = 'UAT' | 'Live' | 'Demo' | 'Test';
 
 export const ASSIGNEES: Assignee[] = ['Alpesh', 'Paras', 'Kreya', 'Devang', 'Palak'];
