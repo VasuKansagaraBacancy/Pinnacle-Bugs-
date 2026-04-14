@@ -1,13 +1,26 @@
 'use client';
 
-import { BugStatus, STATUSES, Assignee, ASSIGNEES } from '@/lib/types';
-import { FiFilter, FiUser, FiCalendar, FiX } from 'react-icons/fi';
+import { useState } from 'react';
+import { BugStatus, STATUSES, Assignee, ASSIGNEES, Priority, PRIORITIES, Environment, ENVIRONMENTS } from '@/lib/types';
+import { FiFilter, FiUser, FiCalendar, FiX, FiChevronDown, FiSearch } from 'react-icons/fi';
 
 export interface FilterState {
   status: BugStatus | 'All';
   assignee: Assignee | 'All';
+  priority: Priority | 'All';
+  environment: Environment | 'All';
   sortOrder: 'desc' | 'asc';
+  ticketSearch: string;
 }
+
+export const defaultFilters: FilterState = {
+  status: 'All',
+  assignee: 'All',
+  priority: 'All',
+  environment: 'All',
+  sortOrder: 'desc',
+  ticketSearch: '',
+};
 
 interface FilterBarProps {
   filters: FilterState;
@@ -16,76 +29,129 @@ interface FilterBarProps {
   filtered: number;
 }
 
-export default function FilterBar({ filters, onChange, total, filtered }: FilterBarProps) {
-  const hasActiveFilters = filters.status !== 'All' || filters.assignee !== 'All';
+const selectClass =
+  'flex-1 sm:flex-none text-sm border border-gray-200 rounded-lg px-3 py-2 sm:py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-0';
 
-  const reset = () =>
-    onChange({ status: 'All', assignee: 'All', sortOrder: filters.sortOrder });
+export default function FilterBar({ filters, onChange, total, filtered }: FilterBarProps) {
+  const [open, setOpen] = useState(false);
+
+  const activeCount = [
+    filters.status !== 'All',
+    filters.assignee !== 'All',
+    filters.priority !== 'All',
+    filters.environment !== 'All',
+    filters.ticketSearch !== '',
+  ].filter(Boolean).length;
+
+  const hasActiveFilters = activeCount > 0;
+  const reset = () => onChange({ ...defaultFilters, sortOrder: filters.sortOrder });
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap items-center gap-3">
-      {/* Status filter */}
-      <div className="flex items-center gap-2">
-        <FiFilter className="w-4 h-4 text-gray-400" />
-        <select
-          value={filters.status}
-          onChange={(e) => onChange({ ...filters, status: e.target.value as BugStatus | 'All' })}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="All">All Statuses</option>
-          {STATUSES.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      {/* ── Mobile toggle ─────────────────────────────── */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="sm:hidden w-full flex items-center justify-between px-4 py-3"
+      >
+        <div className="flex items-center gap-2">
+          <FiFilter className="w-4 h-4 text-gray-400" />
+          <span className="text-sm font-medium text-gray-700">Filters</span>
+          {activeCount > 0 && (
+            <span className="bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+              {activeCount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-gray-400">{filtered}/{total} bugs</span>
+          <FiChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+        </div>
+      </button>
 
-      {/* Assignee filter */}
-      <div className="flex items-center gap-2">
-        <FiUser className="w-4 h-4 text-gray-400" />
-        <select
-          value={filters.assignee}
-          onChange={(e) => onChange({ ...filters, assignee: e.target.value as Assignee | 'All' })}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="All">All Assignees</option>
-          {ASSIGNEES.map((a) => (
-            <option key={a} value={a}>
-              {a}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* ── Filter controls ───────────────────────────── */}
+      <div className={`sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:p-4 ${open ? 'block border-t border-gray-100 p-4 space-y-3' : 'hidden sm:flex'}`}>
 
-      {/* Sort */}
-      <div className="flex items-center gap-2">
-        <FiCalendar className="w-4 h-4 text-gray-400" />
-        <select
-          value={filters.sortOrder}
-          onChange={(e) => onChange({ ...filters, sortOrder: e.target.value as 'asc' | 'desc' })}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="desc">Newest First</option>
-          <option value="asc">Oldest First</option>
-        </select>
-      </div>
+        {/* Ticket search */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <FiSearch className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <div className="relative flex-1 sm:flex-none">
+            <input
+              type="text"
+              value={filters.ticketSearch}
+              onChange={(e) => onChange({ ...filters, ticketSearch: e.target.value })}
+              placeholder="Ticket #..."
+              className="text-sm border border-gray-200 rounded-lg px-3 py-2 sm:py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-32 font-mono"
+            />
+            {filters.ticketSearch && (
+              <button
+                onClick={() => onChange({ ...filters, ticketSearch: '' })}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <FiX className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
 
-      {/* Reset */}
-      {hasActiveFilters && (
-        <button
-          onClick={reset}
-          className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700 transition-colors"
-        >
-          <FiX className="w-4 h-4" />
-          Clear filters
-        </button>
-      )}
+        {/* Status */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <FiFilter className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <select value={filters.status} onChange={(e) => onChange({ ...filters, status: e.target.value as BugStatus | 'All' })} className={selectClass}>
+            <option value="All">All Statuses</option>
+            {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+        </div>
 
-      {/* Count */}
-      <div className="ml-auto text-sm text-gray-500">
-        Showing <span className="font-semibold text-gray-800">{filtered}</span> of{' '}
-        <span className="font-semibold text-gray-800">{total}</span> bugs
+        {/* Priority */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-gray-400 text-sm flex-shrink-0">🎯</span>
+          <select value={filters.priority} onChange={(e) => onChange({ ...filters, priority: e.target.value as Priority | 'All' })} className={selectClass}>
+            <option value="All">All Priorities</option>
+            {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
+          </select>
+        </div>
+
+        {/* Environment */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-gray-400 text-sm flex-shrink-0">🌐</span>
+          <select value={filters.environment} onChange={(e) => onChange({ ...filters, environment: e.target.value as Environment | 'All' })} className={selectClass}>
+            <option value="All">All Environments</option>
+            {ENVIRONMENTS.map((env) => <option key={env} value={env}>{env}</option>)}
+          </select>
+        </div>
+
+        {/* Assignee */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <FiUser className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <select value={filters.assignee} onChange={(e) => onChange({ ...filters, assignee: e.target.value as Assignee | 'All' })} className={selectClass}>
+            <option value="All">All Assignees</option>
+            {ASSIGNEES.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+
+        {/* Sort */}
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <FiCalendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          <select value={filters.sortOrder} onChange={(e) => onChange({ ...filters, sortOrder: e.target.value as 'asc' | 'desc' })} className={selectClass}>
+            <option value="desc">Newest First</option>
+            <option value="asc">Oldest First</option>
+          </select>
+        </div>
+
+        {/* Reset + count */}
+        <div className="flex items-center justify-between sm:contents">
+          {hasActiveFilters && (
+            <button onClick={reset} className="flex items-center gap-1 text-sm text-red-500 hover:text-red-700 transition-colors">
+              <FiX className="w-4 h-4" />
+              Clear filters
+            </button>
+          )}
+          <div className="hidden sm:block sm:ml-auto text-sm text-gray-500">
+            Showing <span className="font-semibold text-gray-800">{filtered}</span> of{' '}
+            <span className="font-semibold text-gray-800">{total}</span> bugs
+          </div>
+        </div>
       </div>
     </div>
   );
