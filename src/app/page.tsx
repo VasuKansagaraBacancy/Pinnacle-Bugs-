@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { FiPlus, FiRefreshCw } from 'react-icons/fi';
+import { FiPlus, FiRefreshCw, FiEye, FiEyeOff } from 'react-icons/fi';
 import { Bug, BugStatus, Assignee, Priority, Environment } from '@/lib/types';
 import { fetchBugs, deleteBug } from '@/services/bugService';
 import BugTable from '@/components/BugTable';
@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
+  const [showFixed, setShowFixed] = useState(false);
 
   const loadBugs = useCallback(async () => {
     setLoading(true);
@@ -49,7 +50,10 @@ export default function DashboardPage() {
     setBugs((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
   }, []);
 
+  const fixedCount = bugs.filter((b) => b.status === 'Fixed').length;
+
   const filtered = bugs
+    .filter((b) => showFixed || b.status !== 'Fixed')
     .filter((b) => filters.status      === 'All' || b.status      === (filters.status      as BugStatus))
     .filter((b) => filters.assignee    === 'All' || b.assignee    === (filters.assignee    as Assignee))
     .filter((b) => filters.priority    === 'All' || b.priority    === (filters.priority    as Priority))
@@ -76,6 +80,19 @@ export default function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowFixed((v) => !v)}
+            className={`flex items-center gap-1.5 px-3 py-2 sm:px-4 text-sm border rounded-xl font-medium transition-colors ${
+              showFixed
+                ? 'bg-green-600 border-green-600 text-white hover:bg-green-700'
+                : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            {showFixed ? <FiEyeOff className="w-4 h-4" /> : <FiEye className="w-4 h-4" />}
+            <span className="hidden sm:inline">
+              {showFixed ? 'Hide Fixed' : `Show Fixed${fixedCount > 0 ? ` (${fixedCount})` : ''}`}
+            </span>
+          </button>
           <button
             onClick={loadBugs}
             disabled={loading}
