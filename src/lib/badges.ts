@@ -16,31 +16,31 @@ export const BADGE_TIERS: BadgeTier[] = [
     id: 'legend',
     label: 'Legend',
     emoji: '👑',
-    minFixed: 20,
+    minFixed: 75,
     color: 'text-yellow-700',
     bg: 'bg-yellow-50',
     border: 'border-yellow-300',
-    description: 'Fixed 20+ bugs',
+    description: '75%+ fix ratio',
   },
   {
     id: 'expert',
     label: 'Expert',
     emoji: '💎',
-    minFixed: 10,
+    minFixed: 50,
     color: 'text-blue-700',
     bg: 'bg-blue-50',
     border: 'border-blue-300',
-    description: 'Fixed 10+ bugs',
+    description: '50%+ fix ratio',
   },
   {
     id: 'pro',
     label: 'Pro Fixer',
     emoji: '🔥',
-    minFixed: 5,
+    minFixed: 25,
     color: 'text-orange-700',
     bg: 'bg-orange-50',
     border: 'border-orange-300',
-    description: 'Fixed 5+ bugs',
+    description: '25%+ fix ratio',
   },
   {
     id: 'starter',
@@ -50,7 +50,7 @@ export const BADGE_TIERS: BadgeTier[] = [
     color: 'text-purple-700',
     bg: 'bg-purple-50',
     border: 'border-purple-300',
-    description: 'Fixed 1+ bugs',
+    description: 'At least 1 fix',
   },
   {
     id: 'newcomer',
@@ -71,40 +71,53 @@ export interface AssigneeStats {
   inProgress: number;
   notFixed: number;
   total: number;
+  ratio: number; // fix ratio: (fixed / total) * 100, rounded to 1 decimal
   badge: BadgeTier;
-  rank: number; // 1-based, among those with fixed > 0
+  rank: number; // 1-based, among those with at least 1 bug assigned
 }
 
+/** Used in BugTable inline assignee display (raw fixed count). */
 export function getBadgeForCount(fixed: number): BadgeTier {
-  return BADGE_TIERS.find((t) => fixed >= t.minFixed) ?? BADGE_TIERS[BADGE_TIERS.length - 1];
+  // Keep original count-based thresholds for inline table use
+  const countTiers = [20, 10, 5, 1, 0];
+  const idx = countTiers.findIndex((min) => fixed >= min);
+  return BADGE_TIERS[idx] ?? BADGE_TIERS[BADGE_TIERS.length - 1];
+}
+
+/** Used on the leaderboard (ratio-based). */
+export function getBadgeForRatio(ratio: number): BadgeTier {
+  return BADGE_TIERS.find((t) => ratio >= t.minFixed) ?? BADGE_TIERS[BADGE_TIERS.length - 1];
 }
 
 export function computeLeaderboard(bugs: Bug[]): AssigneeStats[] {
   const stats: AssigneeStats[] = ASSIGNEES.map((assignee) => {
     const mine = bugs.filter((b) => b.assignee === assignee);
     const fixed = mine.filter((b) => b.status === 'Fixed').length;
+    const total = mine.length;
+    const ratio = total > 0 ? Math.round((fixed / total) * 1000) / 10 : 0;
     return {
       assignee,
       fixed,
       devFixed: mine.filter((b) => b.status === 'Developer Fixed').length,
       inProgress: mine.filter((b) => b.status === 'Under Process').length,
       notFixed: mine.filter((b) => b.status === 'Not Fixed').length,
-      total: mine.length,
-      badge: getBadgeForCount(fixed),
+      total,
+      ratio,
+      badge: getBadgeForRatio(ratio),
       rank: 0,
     };
   });
 
-  // Sort by fixed desc, then by total bugs assigned desc as tiebreaker
-  stats.sort((a, b) => b.fixed - a.fixed || b.total - a.total);
+  // Sort by ratio desc, then by fixed count as tiebreaker
+  stats.sort((a, b) => b.ratio - a.ratio || b.fixed - a.fixed);
 
-  // Assign ranks (only for those who fixed at least 1)
+  // Assign ranks (only for those with at least 1 bug assigned)
   let rank = 1;
   for (let i = 0; i < stats.length; i++) {
-    if (stats[i].fixed === 0) {
+    if (stats[i].total === 0) {
       stats[i].rank = 0;
     } else {
-      if (i > 0 && stats[i].fixed === stats[i - 1].fixed) {
+      if (i > 0 && stats[i].ratio === stats[i - 1].ratio) {
         stats[i].rank = stats[i - 1].rank; // tied rank
       } else {
         stats[i].rank = rank;

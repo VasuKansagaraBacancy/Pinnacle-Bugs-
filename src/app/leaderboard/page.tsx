@@ -41,7 +41,8 @@ function PodiumCard({ stats, bugs }: { stats: AssigneeStats; bugs: Bug[] }) {
 
       <div className="text-center">
         <p className="font-bold text-gray-800 text-sm">{stats.assignee}</p>
-        <p className="text-xs text-gray-500">{stats.fixed} fixed</p>
+        <p className="text-xs font-bold text-green-600">{stats.ratio}%</p>
+        <p className="text-xs text-gray-400">{stats.fixed}/{stats.total} fixed</p>
       </div>
 
       {/* Podium block */}
@@ -94,7 +95,7 @@ export default function LeaderboardPage() {
             Leaderboard
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-            Top bug fixers ranked by QA-verified fixes.
+            Ranked by fix ratio — bugs fixed ÷ total assigned × 100.
           </p>
         </div>
         <button
@@ -182,8 +183,12 @@ export default function LeaderboardPage() {
 
                     {/* Stats */}
                     <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0">
+                      <div className="flex flex-col items-center">
+                        <span className="text-lg font-bold text-green-600">{stats.ratio}%</span>
+                        <span className="text-[11px] text-gray-400 font-medium">Ratio</span>
+                      </div>
                       <StatPill label="Fixed" value={stats.fixed} color="text-green-600" />
-                      <StatPill label="Dev Done" value={stats.devFixed} color="text-blue-600" />
+                      <StatPill label="Total" value={stats.total} color="text-gray-500" />
                       <StatPill label="WIP" value={stats.inProgress} color="text-yellow-600" />
                       <StatPill label="Open" value={stats.notFixed} color="text-red-500" />
                     </div>
@@ -195,7 +200,7 @@ export default function LeaderboardPage() {
 
           {/* ── Badge Legend ───────────────────────────────────── */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6">
-            <h2 className="font-bold text-gray-800 mb-4">Badge Tiers</h2>
+            <h2 className="font-bold text-gray-800 mb-4">Badge Tiers <span className="text-xs text-gray-400 font-normal">(based on fix ratio)</span></h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {BADGE_TIERS.map((tier) => (
                 <div
