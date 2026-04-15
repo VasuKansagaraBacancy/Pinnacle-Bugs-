@@ -112,7 +112,17 @@ export default function DashboardPage() {
       </div>
 
       {!loading && <DavidWarning bugs={bugs} />}
-      {!loading && <StatsCards bugs={bugs} />}
+      {!loading && (
+        <StatsCards
+          bugs={bugs}
+          activeStatus={filters.status}
+          onFilter={(status) => {
+            setFilters((f) => ({ ...f, status }));
+            if (status === 'Fixed') setShowFixed(true);
+            if (status === 'All') setShowFixed(false);
+          }}
+        />
+      )}
 
       {!loading && bugs.length > 0 && (
         <FilterBar
