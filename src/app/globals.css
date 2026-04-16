@@ -6,9 +6,7 @@
 
 @layer base {
   body {
-    @apply antialiased;
-    background-color: #080608;
-    color: #e8d8d8;
+    @apply bg-gray-50 text-gray-900 antialiased;
   }
 }
 
@@ -168,8 +166,3 @@
 }
 .horror-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-/* ── Horror Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0008; }
-::-webkit-scrollbar-thumb { background: #4a0010; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #8b0000; }
