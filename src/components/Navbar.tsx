@@ -1,11 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { FiAlertOctagon, FiPlus, FiHome, FiAward, FiLink } from 'react-icons/fi';
+import { usePathname, useRouter } from 'next/navigation';
+import { FiAlertOctagon, FiPlus, FiHome, FiAward, FiLink, FiLogOut } from 'react-icons/fi';
+import { useAuth } from '@/lib/auth-context';
+
+const AUTH_PATHS = ['/login', '/register', '/auth/callback'];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut } = useAuth();
 
   const isActive = (href: string) =>
     pathname === href
@@ -14,6 +19,20 @@ export default function Navbar() {
 
   const mobileActive = (href: string) =>
     pathname === href ? 'text-blue-600' : 'text-gray-400';
+
+  // Hide navbar entirely on auth pages
+  if (AUTH_PATHS.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
+    return null;
+  }
+
+  const handleLogout = async () => {
+    await signOut();
+    router.replace('/login');
+  };
+
+  // First letter of email for avatar
+  const avatar = user?.email?.[0]?.toUpperCase() ?? '?';
+  const emailLabel = user?.email?.split('@')[0] ?? '';
 
   return (
     <nav className="bg-gradient-to-r from-blue-800 to-blue-600 shadow-lg sticky top-0 z-40">
@@ -46,6 +65,27 @@ export default function Navbar() {
               <FiPlus className="w-4 h-4" />
               Add Bug
             </Link>
+
+            {/* Divider */}
+            <div className="w-px h-5 bg-blue-500/50 mx-1" />
+
+            {/* User avatar + logout */}
+            <div className="flex items-center gap-2 pl-1">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-lg">
+                <div className="w-6 h-6 rounded-full bg-white text-blue-700 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  {avatar}
+                </div>
+                <span className="text-blue-100 text-sm font-medium">{emailLabel}</span>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-blue-100 hover:bg-red-500/20 hover:text-white transition-colors"
+                title="Sign out"
+              >
+                <FiLogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
           </div>
 
           {/* Mobile: Add Bug quick button */}
@@ -95,6 +135,14 @@ export default function Navbar() {
           <FiLink className="w-5 h-5" />
           Links
         </Link>
+
+        <button
+          onClick={handleLogout}
+          className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 text-xs font-medium text-gray-400 hover:text-red-500 transition-colors"
+        >
+          <FiLogOut className="w-5 h-5" />
+          Logout
+        </button>
       </div>
     </nav>
   );

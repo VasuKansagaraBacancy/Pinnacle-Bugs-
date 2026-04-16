@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import Navbar from '@/components/Navbar';
+import { AuthProvider } from '@/lib/auth-context';
+import AuthGuard from '@/components/AuthGuard';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -18,13 +20,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col bg-gray-50">
-          <Navbar />
-          {/* pb-20 on mobile to clear the bottom tab bar */}
-          <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl pb-24 sm:pb-8">
-            {children}
-          </main>
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col bg-gray-50">
+            <Navbar />
+            <AuthGuard>
+              {/* pb-20 on mobile to clear the bottom tab bar */}
+              <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl pb-24 sm:pb-8">
+                {children}
+              </main>
+            </AuthGuard>
+          </div>
+        </AuthProvider>
         <Toaster
           position="top-center"
           toastOptions={{
