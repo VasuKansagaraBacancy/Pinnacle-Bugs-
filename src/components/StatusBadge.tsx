@@ -31,6 +31,11 @@ const statusConfig: Record<BugStatus, { label: string; classes: string; dot: str
     classes: 'bg-green-100 text-green-700 border border-green-200',
     dot: 'bg-green-500',
   },
+  'Improvement': {
+    label: 'Improvement',
+    classes: 'bg-teal-100 text-teal-700 border border-teal-200',
+    dot: 'bg-teal-500',
+  },
 };
 
 export default function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {

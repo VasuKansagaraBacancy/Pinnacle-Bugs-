@@ -1,4 +1,4 @@
-export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed' | 'Ready for QA' | 'Fixed';
+export type BugStatus = 'Not Fixed' | 'Under Process' | 'Developer Fixed' | 'Ready for QA' | 'Fixed' | 'Improvement';
 
 export type Assignee = 'Alpesh' | 'Paras' | 'Kreya' | 'Devang' | 'Palak';
 
@@ -17,7 +17,7 @@ export const ASSIGNEE_PHONES: Partial<Record<Assignee, string>> = {
 
 };
 
-export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Developer Fixed', 'Ready for QA', 'Fixed'];
+export const STATUSES: BugStatus[] = ['Not Fixed', 'Under Process', 'Developer Fixed', 'Ready for QA', 'Fixed', 'Improvement'];
 
 export const PRIORITIES: Priority[] = ['High', 'Medium', 'Low'];
 

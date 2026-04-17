@@ -91,7 +91,8 @@ export function getBadgeForRatio(ratio: number): BadgeTier {
 
 export function computeLeaderboard(bugs: Bug[]): AssigneeStats[] {
   const stats: AssigneeStats[] = ASSIGNEES.map((assignee) => {
-    const mine = bugs.filter((b) => b.assignee === assignee);
+    // Exclude Improvement items — they are not bugs and don't count toward the leaderboard
+    const mine = bugs.filter((b) => b.assignee === assignee && b.status !== 'Improvement');
     const fixed = mine.filter((b) => b.status === 'Fixed').length;
     const total = mine.length;
     const ratio = total > 0 ? Math.round((fixed / total) * 1000) / 10 : 0;

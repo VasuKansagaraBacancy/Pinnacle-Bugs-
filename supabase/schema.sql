@@ -9,7 +9,7 @@ create table if not exists public.bugs (
   description text        not null,
   image_urls  text[]      not null default '{}',
   status      text        not null default 'Not Fixed'
-                          check (status in ('Not Fixed', 'Under Process', 'Developer Fixed', 'Fixed')),
+                          check (status in ('Not Fixed', 'Under Process', 'Developer Fixed', 'Ready for QA', 'Fixed', 'Improvement')),
   assignee    text        not null
                           check (assignee in ('Alpesh', 'Paras', 'Kreya', 'Devang', 'Palak')),
   priority    text        not null default 'Medium'
@@ -70,7 +70,11 @@ create policy "Anyone can delete bug images"
 --   add column if not exists environment text not null default 'UAT'
 --     check (environment in ('UAT', 'Live', 'Demo', 'Test'));
 --
--- -- update status constraint to include Developer Fixed
+-- -- update status constraint to include all statuses
 -- alter table public.bugs drop constraint if exists bugs_status_check;
 -- alter table public.bugs add constraint bugs_status_check
---   check (status in ('Not Fixed', 'Under Process', 'Developer Fixed', 'Fixed'));
+--   check (status in ('Not Fixed', 'Under Process', 'Developer Fixed', 'Ready for QA', 'Fixed', 'Improvement'));
+--
+-- -- add ticket_number column if missing
+-- alter table public.bugs
+--   add column if not exists ticket_number text;

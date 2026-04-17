@@ -10,9 +10,10 @@ interface DavidWarningProps {
 export default function DavidWarning({ bugs }: DavidWarningProps) {
   const [dismissed, setDismissed] = useState(false);
 
-  const openBugs = bugs.filter((b) => b.status === 'Not Fixed').length;
+  // Improvement items are not bugs — exclude from the David warning
+  const openBugs  = bugs.filter((b) => b.status === 'Not Fixed').length;
   const inProgress = bugs.filter((b) => b.status === 'Under Process').length;
-  const total = openBugs + inProgress;
+  const total     = openBugs + inProgress;
 
   if (total === 0 || dismissed) return null;
 
