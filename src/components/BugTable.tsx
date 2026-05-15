@@ -105,7 +105,7 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
                   <td className="px-3 py-3 text-gray-400 font-mono text-xs">{index + 1}</td>
 
                   <td className="px-3 py-3 max-w-[200px]">
-                    <p className="text-gray-800 line-clamp-2 text-sm">{bug.description}</p>
+                    <p className="text-gray-800 line-clamp-2 text-sm" title={bug.description}>{bug.description}</p>
                   </td>
 
                   {/* Ticket */}
@@ -254,7 +254,7 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
               ) : null}
 
               <div className="flex-1 min-w-0">
-                <p className="text-gray-800 text-sm font-medium line-clamp-2">{bug.description}</p>
+                <p className="text-gray-800 text-sm font-medium line-clamp-2" title={bug.description}>{bug.description}</p>
                 <div className="flex flex-wrap items-center gap-1.5 mt-2">
                   <StatusBadge status={bug.status} size="sm" />
                   <PriorityBadge priority={bug.priority} size="sm" />
