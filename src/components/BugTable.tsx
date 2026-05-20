@@ -58,10 +58,30 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
 
   if (bugs.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-16 text-center">
-        <div className="text-gray-300 text-6xl mb-4">🐛</div>
-        <p className="text-gray-500 text-lg font-medium">No bugs found</p>
-        <p className="text-gray-400 text-sm mt-1">Try adjusting your filters or add a new bug.</p>
+      <div className="bg-white rounded-xl border border-gray-200 p-16 text-center overflow-hidden">
+        <style>{`
+          @keyframes dance {
+            0%   { transform: translateY(0) rotate(0deg); }
+            15%  { transform: translateY(-18px) rotate(-10deg); }
+            30%  { transform: translateY(0) rotate(10deg); }
+            45%  { transform: translateY(-12px) rotate(-6deg); }
+            60%  { transform: translateY(0) rotate(6deg); }
+            75%  { transform: translateY(-8px) rotate(-3deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+          }
+          @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25%       { transform: rotate(20deg); }
+            75%       { transform: rotate(-20deg); }
+          }
+          .dancer { animation: dance 1s ease-in-out infinite; display: inline-block; font-size: 5rem; line-height: 1; }
+          .dancer-arm { animation: wave 0.5s ease-in-out infinite; display: inline-block; transform-origin: bottom center; }
+        `}</style>
+        <div className="dancer mb-4">🕺</div>
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 mb-2 tracking-wide">
+          Nacho Bencho!
+        </h2>
+        <p className="text-gray-400 text-sm mt-1">No bugs here — time to celebrate! 🎉</p>
       </div>
     );
   }
