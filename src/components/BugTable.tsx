@@ -137,13 +137,11 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
                 <tr key={bug.id} className="hover:bg-gray-50/70 transition-colors">
                   <td className="px-3 py-3 text-gray-400 font-mono text-xs">{index + 1}</td>
 
-                  <td className="px-3 py-3 max-w-[200px]">
-                    <Link
-                      href={`/bug/${bug.id}`}
-                      className="text-gray-800 hover:text-blue-600 hover:underline line-clamp-2 text-sm block"
-                      title={bug.description}
-                    >
-                      {bug.description}
+                  <td className="px-3 py-3 w-64">
+                    <Link href={`/bug/${bug.id}`} title={bug.description}>
+                      <p className="text-gray-800 hover:text-blue-600 hover:underline text-sm line-clamp-2 max-w-[240px] overflow-hidden">
+                        {bug.description}
+                      </p>
                     </Link>
                   </td>
 
