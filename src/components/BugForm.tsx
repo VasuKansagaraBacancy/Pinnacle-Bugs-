@@ -23,29 +23,39 @@ export default function BugForm({ bug }: BugFormProps) {
   const isEdit = !!bug;
 
   const [form, setForm] = useState({
-    description:   bug?.description   ?? '',
-    status:        (bug?.status        ?? 'Not Fixed') as BugStatus,
-    assignee:      (bug?.assignee      ?? 'Alpesh')    as Assignee,
-    priority:      (bug?.priority      ?? 'Medium')    as Priority,
-    environment:   (bug?.environment   ?? 'UAT')       as Environment,
-    date:          bug?.date ?? format(new Date(), 'yyyy-MM-dd'),
-    ticket_number: bug?.ticket_number ?? '',
+    description:         bug?.description         ?? '',
+    status:              (bug?.status              ?? 'Not Fixed') as BugStatus,
+    assignee:            (bug?.assignee            ?? 'Alpesh')    as Assignee,
+    priority:            (bug?.priority            ?? 'Medium')    as Priority,
+    environment:         (bug?.environment         ?? 'UAT')       as Environment,
+    date:                bug?.date ?? format(new Date(), 'yyyy-MM-dd'),
+    ticket_number:       bug?.ticket_number        ?? '',
+    credential_email:    bug?.credential_email     ?? '',
+    credential_password: bug?.credential_password  ?? '',
+    credential_role:     bug?.credential_role      ?? '',
   });
 
-  const [newFiles, setNewFiles]   = useState<File[]>([]);
-  const [keptUrls, setKeptUrls]   = useState<string[]>(bug?.image_urls ?? []);
-  const [loading, setLoading]     = useState(false);
-  const [errors, setErrors]       = useState<Partial<Record<keyof typeof form, string>>>({});
+  const [newFiles, setNewFiles] = useState<File[]>([]);
+  const [keptUrls, setKeptUrls] = useState<string[]>(bug?.image_urls ?? []);
+  const [loading, setLoading]   = useState(false);
+  const [errors, setErrors]     = useState<Partial<Record<keyof typeof form | 'images', string>>>({});
 
   const handleImagesChange = useCallback((files: File[], kept: string[]) => {
     setNewFiles(files);
     setKeptUrls(kept);
+    if (files.length || kept.length) {
+      setErrors((prev) => ({ ...prev, images: undefined }));
+    }
   }, []);
 
   const validate = () => {
     const errs: typeof errors = {};
-    if (!form.description.trim()) errs.description = 'Description is required';
-    if (!form.date) errs.date = 'Date is required';
+    if (!form.description.trim())         errs.description         = 'Description is required';
+    if (!form.date)                        errs.date                = 'Date is required';
+    if (!form.credential_email.trim())     errs.credential_email    = 'Credential email is required';
+    if (!form.credential_password.trim())  errs.credential_password = 'Credential password is required';
+    if (!form.credential_role.trim())      errs.credential_role     = 'Credential role is required';
+    if (!newFiles.length && !keptUrls.length) errs.images           = 'At least one image is required';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -62,22 +72,22 @@ export default function BugForm({ bug }: BugFormProps) {
       }
 
       const payload: CreateBugPayload = {
-        description:   form.description.trim(),
-        status:        form.status,
-        assignee:      form.assignee,
-        priority:      form.priority,
-        environment:   form.environment,
-        date:          form.date,
-        image_urls:    [...keptUrls, ...uploadedUrls],
-        ticket_number: form.ticket_number.trim() || null,
+        description:         form.description.trim(),
+        status:              form.status,
+        assignee:            form.assignee,
+        priority:            form.priority,
+        environment:         form.environment,
+        date:                form.date,
+        image_urls:          [...keptUrls, ...uploadedUrls],
+        ticket_number:       form.ticket_number.trim() || null,
+        credential_email:    form.credential_email.trim(),
+        credential_password: form.credential_password.trim(),
+        credential_role:     form.credential_role.trim(),
       };
 
       if (isEdit) {
         await updateBug(bug.id, payload);
-        // Notify only if assignee was changed
-        if (bug.assignee !== form.assignee) {
-          notifyAssignee(payload);
-        }
+        if (bug.assignee !== form.assignee) notifyAssignee(payload);
         toast.success('Bug updated successfully!');
       } else {
         await createBug(payload);
@@ -99,6 +109,10 @@ export default function BugForm({ bug }: BugFormProps) {
   };
 
   const selectClass = 'w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500';
+  const inputClass  = (err?: string) =>
+    `w-full px-4 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
+      err ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-white'
+    }`;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -120,10 +134,60 @@ export default function BugForm({ bug }: BugFormProps) {
         {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
       </div>
 
-      {/* Images */}
+      {/* Credentials */}
+      <div className="border border-gray-200 rounded-xl p-4 bg-gray-50 space-y-4">
+        <h3 className="text-sm font-semibold text-gray-700">Credentials</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Email <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              value={form.credential_email}
+              onChange={(e) => handleChange('credential_email', e.target.value)}
+              disabled={loading}
+              placeholder="user@example.com"
+              className={inputClass(errors.credential_email)}
+            />
+            {errors.credential_email && <p className="text-red-500 text-xs mt-1">{errors.credential_email}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={form.credential_password}
+              onChange={(e) => handleChange('credential_password', e.target.value)}
+              disabled={loading}
+              placeholder="password"
+              className={inputClass(errors.credential_password)}
+            />
+            {errors.credential_password && <p className="text-red-500 text-xs mt-1">{errors.credential_password}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Role <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={form.credential_role}
+              onChange={(e) => handleChange('credential_role', e.target.value)}
+              disabled={loading}
+              placeholder="e.g. Admin, User"
+              className={inputClass(errors.credential_role)}
+            />
+            {errors.credential_role && <p className="text-red-500 text-xs mt-1">{errors.credential_role}</p>}
+          </div>
+        </div>
+      </div>
+
+      {/* Images — required, at least 1 */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-          Screenshots / Images <span className="text-gray-400 font-normal">(optional, up to 10)</span>
+          Screenshots / Images <span className="text-red-500">*</span>{' '}
+          <span className="text-gray-400 font-normal">(at least 1, up to 10)</span>
         </label>
         <ImageUpload
           existingUrls={bug?.image_urls ?? []}
@@ -131,6 +195,7 @@ export default function BugForm({ bug }: BugFormProps) {
           disabled={loading}
           maxImages={10}
         />
+        {errors.images && <p className="text-red-500 text-xs mt-1">{errors.images}</p>}
       </div>
 
       {/* Status + Assignee */}

@@ -33,6 +33,9 @@ export interface Bug {
   environment: Environment;
   date: string;
   ticket_number?: string | null;
+  credential_email: string;
+  credential_password: string;
+  credential_role: string;
   created_at: string;
   updated_at: string;
 }
@@ -46,6 +49,9 @@ export interface CreateBugPayload {
   environment: Environment;
   date: string;
   ticket_number?: string | null;
+  credential_email: string;
+  credential_password: string;
+  credential_role: string;
 }
 
 export interface UpdateBugPayload extends Partial<CreateBugPayload> {}

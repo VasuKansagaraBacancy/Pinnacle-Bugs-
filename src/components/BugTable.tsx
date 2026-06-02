@@ -138,7 +138,13 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
                   <td className="px-3 py-3 text-gray-400 font-mono text-xs">{index + 1}</td>
 
                   <td className="px-3 py-3 max-w-[200px]">
-                    <p className="text-gray-800 line-clamp-2 text-sm" title={bug.description}>{bug.description}</p>
+                    <Link
+                      href={`/bug/${bug.id}`}
+                      className="text-gray-800 hover:text-blue-600 hover:underline line-clamp-2 text-sm block"
+                      title={bug.description}
+                    >
+                      {bug.description}
+                    </Link>
                   </td>
 
                   {/* Ticket */}
@@ -287,7 +293,14 @@ export default function BugTable({ bugs, allBugs, onDelete, onUpdate, deleting }
               ) : null}
 
               <div className="flex-1 min-w-0">
-                <p className="text-gray-800 text-sm font-medium line-clamp-2" title={bug.description}>{bug.description}</p>
+                <Link
+                  href={`/bug/${bug.id}`}
+                  className="text-gray-800 hover:text-blue-600 hover:underline text-sm font-medium line-clamp-2 block"
+                  title={bug.description}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {bug.description}
+                </Link>
                 <div className="flex flex-wrap items-center gap-1.5 mt-2">
                   <StatusBadge status={bug.status} size="sm" />
                   <PriorityBadge priority={bug.priority} size="sm" />

@@ -78,3 +78,12 @@ create policy "Anyone can delete bug images"
 -- -- add ticket_number column if missing
 -- alter table public.bugs
 --   add column if not exists ticket_number text;
+
+-- ============================================================
+-- MIGRATION v2 — Add credential & photo fields
+-- Run this in the Supabase SQL Editor if the table already exists
+-- ============================================================
+alter table public.bugs
+  add column if not exists credential_email    text not null default '',
+  add column if not exists credential_password text not null default '',
+  add column if not exists credential_role     text not null default '';
